@@ -1,0 +1,35 @@
+[{"model": "mainapp.news", "pk": 1, "fields": {
+  "bode": "bode1",
+  "body_as_markdown": false,
+  "created_at": "2022-11-22T13:51:00.375Z",
+  "delited": false,
+  "preamble": "preambule1",
+  "title": "news1",
+  "update_at": "2022-11-22T13:51:00.375Z"
+}},
+  {
+    "fields": {
+      "title": "news1",
+      "preamble": "preambule2",
+      "bode": "bode2",
+      "body_as_markdown": false,
+      "created_at": "2022-11-22T13:59:55.653Z",
+      "update_at": "2022-11-22T17:55:38.077Z",
+      "delited": false
+    },
+    "model": "mainapp.news",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "title": "Новость из админки",
+      "preamble": "Короткое вступление",
+      "bode": "Не длинное содержимое",
+      "body_as_markdown": false,
+      "created_at": "2022-11-22T17:27:07.255Z",
+      "update_at": "2022-11-22T17:27:07.255Z",
+      "delited": false
+    },
+    "model": "mainapp.news",
+    "pk": 3
+  }]
