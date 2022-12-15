@@ -1,18 +1,24 @@
 # from django.shortcuts import render
+from venv import logger
+
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
+from django.core.cache import cache
 from django.http import HttpResponse, JsonResponse, FileResponse, HttpResponseRedirect
 import requests
-from django.core import cache
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, UpdateView, DeleteView, DetailView, CreateView, View
 from datetime import datetime
+
+
 from mainapp import tasks
 import mainapp.tasks
 from config import settings
 from mainapp.forms import CourseFeedbackForm
 from mainapp.models import News, Course, Lesson, CourseTeacher, CourseFeedback
+from mainapp import models as mainapp_models
+from mainapp import forms as mainapp_forms
 
 
 class ContactsView(TemplateView):
@@ -124,6 +130,46 @@ class CourseDetailView(TemplateView):
                 user=self.request.user
                 )
         return context_data
+    # def get_context_data(self, pk=None, **kwargs):
+    #     logger.debug("Yet another log message")
+    #
+    #     context = super(CourseDetailView, self).get_context_data(**kwargs)
+    #     context["course_object"] = get_object_or_404(Course, pk=pk)
+    #     context["lessons"] = mainapp_models.Lesson.objects.filter(
+    #         course=context["course_object"]
+    # )
+    #     context["teachers"] = mainapp_models.CourseTeacher.objects.filter(
+    #         courses=context["course_object"]
+    # )
+    #     if not self.request.user.is_anonymous:
+    #         if not mainapp_models.CourseFeedback.objects.filter(
+    #             course=context["course_object"], user=self.request.user
+    #     ).count():
+    #             context["feedback_form"] = mainapp_forms.CourseFeedbackForm(
+    #                 course=context["course_object"], user=self.request.user
+    #         )
+    #     cached_feedback = cache.get(f"feedback_list_{pk}")
+    #     if not cached_feedback:
+    #         context["feedback_list"] = (
+    #             mainapp_models.CourseFeedback.objects.filter(
+    #                 course=context["course_object"]
+    #         )
+    #             .order_by("-created_at", "-rating")[:5]
+    #             .select_related()
+    #     )
+    #         cache.set(
+    #             f"feedback_list_{pk}", context["feedback_list"], timeout=300
+    #     )  # 5 minutes
+    #     # Archive object for tests --->
+    #         import pickle
+    #         with open(
+    #             f"mainapp/fixtures/006_feedback_list_{pk}.bin", "wb"
+    #     ) as outf:
+    #             pickle.dump(context["feedback_list"], outf)
+    #     # <--- Archive object for tests
+    #     else:
+    #         context["feedback_list"] = cached_feedback
+    #         return context
 
 
 class CourseFeedbackCreateView(CreateView):
@@ -141,6 +187,7 @@ class LogView(UserPassesTestMixin, TemplateView):
 
     def test_func(self):
         return self.request.user.is_superuser
+
     def get_context_data(self, **kwargs):
 
         context_data = super().get_context_data(**kwargs)

@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 NULLABLE = {'blank': True, 'null': True}
 
@@ -30,18 +31,18 @@ class NewsManager(models.Manager):
 
 class News(BaseModel):
     # objects = NewsManager()
-    title = models.CharField(max_length=256, verbose_name='Заголовок')
-    preamble = models.CharField(max_length=1024, verbose_name='Вступление')
+    title = models.CharField(max_length=256, verbose_name=_('Заголовок'))
+    preamble = models.CharField(max_length=1024, verbose_name=_('Вступление'))
 
-    bode = models.TextField(verbose_name='Содержимое')
-    body_as_markdown = models.BooleanField(default=False, verbose_name='Разметка')
+    bode = models.TextField(verbose_name=_('Содержимое'))
+    body_as_markdown = models.BooleanField(default=False, verbose_name=_('Разметка'))
 
     def __str__(self):
         return f'#{self.pk}{self.title}'
 
     class Meta:
-        verbose_name = 'Новость'
-        verbose_name_plural = 'Новости'
+        verbose_name = _('Новость')
+        verbose_name_plural = _('Новости')
 
 
 class Course(BaseModel):
@@ -53,8 +54,8 @@ class Course(BaseModel):
     def __str__(self):
         return f'{self.pk}{self.title}'
     class Meta:
-        verbose_name = 'Курс'
-        verbose_name_plural = 'Курсы'
+        verbose_name = _('Курс')
+        verbose_name_plural = _('Курсы')
 
 
 class Lesson(BaseModel):
@@ -67,8 +68,8 @@ class Lesson(BaseModel):
     def __str__(self):
         return f'{self.pk} {self.title}'
     class Meta:
-        verbose_name = 'Урок'
-        verbose_name_plural = 'Уроки'
+        verbose_name = _('Урок')
+        verbose_name_plural = _('Уроки')
 
 
 class CourseTeacher(BaseModel):
@@ -83,8 +84,8 @@ class CourseTeacher(BaseModel):
         return f'{self.first_name} {self.last_name}'
 
     class Meta:
-        verbose_name = 'Курс к учителю'
-        verbose_name_plural = 'Курсы к учителям'
+        verbose_name = _('Курс к учителю')
+        verbose_name_plural = _('Курсы к учителям')
 
 
 class CourseFeedback(BaseModel):
